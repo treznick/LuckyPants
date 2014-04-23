@@ -19,7 +19,7 @@ public class Book {
 	}
 
 	public boolean addAuthor(String author) {
-		if(this.authors.size() <= Book.maxAuthors()) {
+		if(this.authors.size() < Book.maxAuthors()) {
 			this.authors.add(author);
 			return true;
 		} else {
