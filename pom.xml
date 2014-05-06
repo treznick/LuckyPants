@@ -9,18 +9,49 @@
     <properties>
         <tomcat.version>7.0.34</tomcat.version>
         <jersey.version>1.8</jersey.version>
+        <jackson.version>1.8.1</jackson.version>
         <target.version>1.6</target.version>
         <appassembler.version>1.8</appassembler.version>
         <source.version>1.6</source.version>
         <mvn.compiler.version>3.0</mvn.compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-        <dependencies>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-server</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
+    <dependencies>
+         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-bundle</artifactId>
+            <version>${jersey.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>${jersey.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.10.1</version>
+         </dependency>
+         <dependency>
+         		<groupId>org.codehaus.jackson</groupId>
+         		<artifactId>jackson-core-asl</artifactId>
+         		<version>${jackson.version}</version>
+         </dependency>
+         <dependency>
+         		<groupId>org.codehaus.jackson</groupId>
+         		<artifactId>jackson-mapper-asl</artifactId>
+         		<version>${jackson.version}</version>
+         </dependency>
          <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -51,23 +82,10 @@
             <artifactId>tomcat-jsp-api</artifactId>
             <version>${tomcat.version}</version>
         </dependency>
-        
     </dependencies>
     <build>
         <finalName>LuckyPants</finalName>
         <plugins>
-           <!-- <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-                <configuration>
-                    <warSourceDirectory>src/main/java/com</warSourceDirectory>
-                    <webResources>
-                        <resource>
-                            <directory>WebContent</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>-->
            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
