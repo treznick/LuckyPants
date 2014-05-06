@@ -9,14 +9,16 @@ Lucky Pants Books
 	boolean errorFlag = false;
 	String [] authorInputs = authorString.split(";");
 	
-	for(int i = 0; i<authorInputs.length; ++i) {
-		if(book1.addAuthor(authorInputs[i])) {
-			returnStatus = "You Have Successfully Created a Book!";
-			errorFlag = false;
-		} else {
-			returnStatus = "Error, Book Unsuccessfully Created.";
-			errorFlag = true;
+	try {
+		for(String author : authorInputs) {
+			book1.addAuthor(author);
 		}
+		returnStatus = "You Have Successfully Created a Book!";
+		errorFlag = false;
+	} catch (IllegalArgumentException e) {
+		System.out.println(e);
+		returnStatus = "Error, Book Unsuccessfully Created.";
+		errorFlag = true;
 	}
 	
 	out.println("<br/>");
