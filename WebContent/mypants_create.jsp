@@ -1,6 +1,6 @@
 <%@ page import="com.luckypants.model.Book"%>
 Lucky Pants Books
-<br/>
+<br />
 <%
 	Book book1 = new Book();
 	book1.setTitle(request.getParameter("title"));

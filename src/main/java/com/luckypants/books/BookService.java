@@ -1,7 +1,11 @@
 package com.luckypants.books;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -12,6 +16,13 @@ import javax.ws.rs.Consumes;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.luckypants.command.CreateBookCommand;
+
+
+
 
 
 
@@ -42,23 +53,20 @@ public class BookService {
 	@Consumes("application/x-www-form-urlencoded")
 	public Response setBook(@FormParam("title") String title, @FormParam("authors") String authors) {
 		String response = new String();
-		boolean noErrorFlag = true;
 		
 		String [] authorArray = authors.split(";");
 		book1.setTitle(title);
 		
 		for(String s : authorArray) {
-			if(!book1.addAuthor(s)) {
-				noErrorFlag = false;
+			try {
+				book1.addAuthor(s);
+				response = "Title: " + book1.getTitle() + " " + "Author: " + book1.serializeAuthors();
+			} catch (IllegalArgumentException e) {
+				System.out.println(e);
+				response = "Error, too many authors added!";
 			}
 		}
-		
-		if(noErrorFlag) {
-			response = "Title: " + book1.getTitle() + " " + "Author: " + book1.serializeAuthors();
-		} else {
-			response = "Error, too many authors added!";
-		}
-		
+
 		return Response.status(200).entity(response).build();
 	}
 }

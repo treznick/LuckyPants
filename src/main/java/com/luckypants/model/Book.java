@@ -5,6 +5,15 @@ public class Book {
 	private String title;
 	private int pages;
 	private ArrayList<String> authors = new ArrayList<String>();
+	private String isbn;
+
+	public String getISBN() {
+		return isbn;
+	}
+
+	public void setISBN(String isbn) {
+		this.isbn = isbn;
+	}
 
 	public String getTitle() {
 		return title;
@@ -17,15 +26,24 @@ public class Book {
 	public ArrayList<String> getAuthors() {
 		return authors;
 	}
-
-	public boolean addAuthor(String author) {
-		if(this.authors.size() < Book.maxAuthors()) {
-			this.authors.add(author);
-			return true;
+	public void setAuthors(ArrayList<String> authors) {
+		if(authors.size() < Book.maxAuthors()) {
+			for(String author : authors) {
+				this.authors.add(author);
+			}
 		} else {
-			return false;
+			throw new IllegalArgumentException("Too Many Authors");
 		}
 	}
+
+	public void addAuthor(String author) {
+		if(this.authors.size() < Book.maxAuthors()) {
+			this.authors.add(author);
+		} else {
+			throw new IllegalArgumentException("Too Many Authors");
+		}
+	}
+	
 	public String serializeAuthors() {
 		StringBuilder out = new StringBuilder();
 		for(Object o: authors) {
