@@ -26,7 +26,7 @@ public class MongoTest {
 			MongoClient mongo = new MongoClient("oceanic.mongohq.com", 10013);
 			
 //			Connect to DB
-			DB db = mongo.getDB("luckypants");
+			DB db = mongo.getDB("luckypants_development");
 			if (db == null) {
 				System.out.println("Could not connect to Database");
 			}
