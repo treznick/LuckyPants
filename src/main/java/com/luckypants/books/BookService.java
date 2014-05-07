@@ -20,53 +20,75 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.luckypants.command.CreateBookCommand;
-
-
-
-
-
-
-
+import com.luckypants.command.DeleteBookCommand;
+import com.luckypants.command.GetBookCommand;
+import com.luckypants.command.ListAllBooksCommand;
+import com.luckypants.command.FindBooksCommand;
 import com.luckypants.model.Book;
+import com.mongodb.DBObject;
+
 
 @Path("/books")
 public class BookService {
-	Book book1 = new Book();
+	ObjectMapper mapper = new ObjectMapper();
 	
 	@GET
-	@Path("/")
-	public Response getBook() {
-		String response = "Title: "+book1.getTitle()+" "+"Authors: "+book1.serializeAuthors();
-		return Response.status(200).entity(response).build();
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response listBooks() {
+		ListAllBooksCommand listBooks = new ListAllBooksCommand();
+		ArrayList<DBObject> list = listBooks.execute();
+		return Response.status(200).entity(list).build();
 	}
 	
 	@GET
-	@Path("/{username}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response getName(@PathParam("username") String userName) {
-		String response = "Hello " + userName;
-		return Response.status(200).entity(response).build();
+	@Path("/{key}/{value}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooksByValue(@PathParam("key") String key, @PathParam("value") String value) {
+		FindBooksCommand findBooks = new FindBooksCommand();
+		ArrayList<DBObject> list = findBooks.execute(key, value);
+		return Response.status(200).entity(list).build();
 	}
 	
-	@POST
-	@Path("/")
-	@Consumes("application/x-www-form-urlencoded")
-	public Response setBook(@FormParam("title") String title, @FormParam("authors") String authors) {
-		String response = new String();
+	@GET
+	@Path("/{isbn}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBook(@PathParam("isbn") String isbn) {
+		GetBookCommand getBookCommand = new GetBookCommand();
+		DBObject book = getBookCommand.execute(isbn);
+		return Response.status(200).entity(book).build();
+	}
+	
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	public Response createBook(String bookStr) {
 		
-		String [] authorArray = authors.split(";");
-		book1.setTitle(title);
-		
-		for(String s : authorArray) {
-			try {
-				book1.addAuthor(s);
-				response = "Title: " + book1.getTitle() + " " + "Author: " + book1.serializeAuthors();
-			} catch (IllegalArgumentException e) {
-				System.out.println(e);
-				response = "Error, too many authors added!";
+		try {
+			CreateBookCommand create = new CreateBookCommand();
+			Book book = mapper.readValue(bookStr, Book.class);
+			boolean success = create.execute(book);
+			String bookJSON = mapper.writeValueAsString(book);
+			if (success) {
+				return Response.status(201).entity(bookJSON).build();
+			} else {
+				return Response.status(500).entity("").build();
 			}
+		} catch (Exception e) {
+			return Response.status(500).entity(e.toString()).build();
 		}
-
-		return Response.status(200).entity(response).build();
 	}
+	
+	@DELETE
+	@Path("/{isbn}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteBook(@PathParam("isbn") String isbn) {
+		DeleteBookCommand delete = new DeleteBookCommand();
+		if(delete.execute(isbn)){
+			return Response.status(200).entity(isbn).build();
+		} else {
+			return Response.status(500).entity("Error: Could not delete "+isbn).build();
+		}
+	}
+		
+
 }
