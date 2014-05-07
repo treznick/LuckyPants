@@ -5,7 +5,6 @@ package test;
  * http://www.mkyong.com/mongodb/java-mongodb-hello-world-example/
  */
 import java.net.UnknownHostException;
-import java.util.Date;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -33,7 +32,7 @@ public class MongoTest {
 			}
 			
 //			Auth
-			boolean auth = db.authenticate("lpuser", "&aJmXAcd%B7@&425".toCharArray() );
+			boolean auth = db.authenticate("foo", "bar".toCharArray() );
 			if (auth == false) {
 				System.out.println("Could not authenticate");
 			}
