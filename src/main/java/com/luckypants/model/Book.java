@@ -1,6 +1,10 @@
 package com.luckypants.model;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Book {
 	private String title;
 	private int pages;
@@ -26,6 +30,25 @@ public class Book {
 	public ArrayList<String> getAuthors() {
 		return authors;
 	}
+	
+	public String authorsToStr() {
+		if (authors.size() == 1) {
+			return authors.get(0).toString();
+		} else if (authors.size() == 2) {
+			return authors.get(0) + " and " + authors.get(1);
+		} else if (authors.size() > 3) {
+			String returnStr = new String();
+			for (int i = 0; i < authors.size() - 2; ++i) {
+				returnStr += (authors.get(i) + ", ");
+			}
+			returnStr += "and ";
+			returnStr += authors.get(authors.size() -1);
+			return returnStr;
+		} else {
+			return "";
+		}
+	}
+	
 	public void setAuthors(ArrayList<String> authors) {
 		if(authors.size() < Book.maxAuthors()) {
 			for(String author : authors) {

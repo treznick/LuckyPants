@@ -40,6 +40,7 @@ public class BookService {
 		return Response.status(200).entity(list).build();
 	}
 	
+//	Search Logic
 	@GET
 	@Path("/{key}/{value}")
 	@Produces(MediaType.APPLICATION_JSON)
