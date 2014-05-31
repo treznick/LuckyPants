@@ -6,6 +6,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.luckypants.properties.PropertiesLookup;
 
 public class BooksConnectionProvider {
 	/**
@@ -15,19 +16,24 @@ public class BooksConnectionProvider {
 	
 	public DBCollection getCollection() {
 		try {
-			MongoClient mongo = new MongoClient("oceanic.mongohq.com", 10013);
+			PropertiesLookup pl = new PropertiesLookup();
+			MongoClient mongo = new MongoClient(pl.getProperty("mongodbURL"), 
+					Integer.parseInt(pl.getProperty("mongodbPORT")));
 			
-			DB db = mongo.getDB("luckypants_development");
+			DB db = mongo.getDB(pl.getProperty("mongodbDBNAME"));
 			if (db == null) {
 				System.out.println("Could not connect to DB");
 			}
 			
-			boolean auth = db.authenticate("lpuser", "&aJmXAcd%B7@&425".toCharArray() );
+			boolean auth = db.authenticate(
+					pl.getProperty("mongodbUSER"),
+					pl.getProperty("mongodbPW").toCharArray() );
 			if (auth == false) {
 				System.out.println("Could not authenticate");
 			}
 			
-			DBCollection booksColl = db.getCollection("books");
+			DBCollection booksColl = db.getCollection(
+					pl.getProperty("mongodbCOLLECTION"));
 			return booksColl;
 			
 		} catch(UnknownHostException e) {
