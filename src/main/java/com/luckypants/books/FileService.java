@@ -5,16 +5,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
+import com.luckypants.command.ProvidePackagedFileCommand;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
  
 @Path("/file")
-public class UploadFileService {
+public class FileService {
  
 	@POST
 	@Path("/upload")
@@ -32,6 +39,41 @@ public class UploadFileService {
  
 		return Response.status(200).entity(output).build();
  
+	}
+	
+//	File operations
+	@GET
+	@Path("/{filename}")
+	@Produces(MediaType.WILDCARD)
+	public Response getFile(@PathParam("filename") String filename) {
+		try {
+			ProvidePackagedFileCommand getFile = new ProvidePackagedFileCommand();
+			InputStream is = getFile.execute(filename);
+
+			ResponseBuilder response = Response.ok((Object) is);
+			response.header("Content-Disposition", "attachment; filename=\""
+					+ filename + "\"");
+			return response.build();
+		} catch (Exception e) {
+			return Response.status(404).entity(e.getMessage()).build();
+		}
+	}
+
+	@GET
+	@Path("inline/{filename}")
+	@Produces(MediaType.WILDCARD)
+	public Response renderFile(@PathParam("filename") String filename) {
+		try {
+			ProvidePackagedFileCommand getFile = new ProvidePackagedFileCommand();
+			InputStream is = getFile.execute(filename);
+
+			ResponseBuilder response = Response.ok((Object) is);
+			response.header("Content-Disposition", "inline; filename=\""
+					+ filename + "\"");
+			return response.build();
+		} catch (Exception e) {
+			return Response.status(404).entity(e.getMessage()).build();
+		}
 	}
  
 	// save uploaded file to new location

@@ -2,7 +2,6 @@ package com.luckypants.books;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.io.InputStream;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -18,7 +17,6 @@ import javax.ws.rs.Consumes;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -26,7 +24,6 @@ import com.luckypants.command.CreateBookCommand;
 import com.luckypants.command.DeleteBookCommand;
 import com.luckypants.command.GetBookCommand;
 import com.luckypants.command.ListAllBooksCommand;
-import com.luckypants.command.ProvidePackagedFileCommand;
 import com.luckypants.command.FindBooksCommand;
 import com.luckypants.model.Book;
 import com.luckypants.properties.PropertiesLookup;
@@ -125,41 +122,6 @@ public class BookService {
 			return Response.status(200).entity(isbn).build();
 		} else {
 			return Response.status(500).entity("Error: Could not delete "+isbn).build();
-		}
-	}
-	
-//	File operations
-	@GET
-	@Path("files/{filename}")
-	@Produces(MediaType.WILDCARD)
-	public Response getFile(@PathParam("filename") String filename) {
-		try {
-			ProvidePackagedFileCommand getFile = new ProvidePackagedFileCommand();
-			InputStream is = getFile.execute(filename);
-
-			ResponseBuilder response = Response.ok((Object) is);
-			response.header("Content-Disposition", "attachment; filename=\""
-					+ filename + "\"");
-			return response.build();
-		} catch (Exception e) {
-			return Response.status(404).entity(e.getMessage()).build();
-		}
-	}
-
-	@GET
-	@Path("inline/{filename}")
-	@Produces(MediaType.WILDCARD)
-	public Response renderFile(@PathParam("filename") String filename) {
-		try {
-			ProvidePackagedFileCommand getFile = new ProvidePackagedFileCommand();
-			InputStream is = getFile.execute(filename);
-
-			ResponseBuilder response = Response.ok((Object) is);
-			response.header("Content-Disposition", "inline; filename=\""
-					+ filename + "\"");
-			return response.build();
-		} catch (Exception e) {
-			return Response.status(404).entity(e.getMessage()).build();
 		}
 	}
 
