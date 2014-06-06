@@ -6,7 +6,7 @@ author_url="/rest/authors/";
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
-    			if(key != "_author_id" && key != "genres") {
+    			if(key != "_author_id" && key != "genres" && key != "author") {
     				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">");
     			} else if(key == "author") {
     				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='"+key+"'>");
