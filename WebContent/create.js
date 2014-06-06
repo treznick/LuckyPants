@@ -6,10 +6,10 @@ author_url="/rest/authors/";
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
-    			if(key != "author" && key != "genres") {
+    			if(key != "_author_id" && key != "genres") {
     				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">");
     			} else if(key == "author") {
-    				$("div.book_div").append("<select id='author_select' name='"+key+"'>");
+    				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='"+key+"'>");
     				$.getJSON(author_url, function(data){
     					console.log(data);
     					$.each (data, function( count, object){
