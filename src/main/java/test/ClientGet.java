@@ -46,7 +46,7 @@ public class ClientGet {
 			for (Book book : bookArray) {
 				System.out.println("Book " + k + ":");
 				System.out.println("ISBN: " + book.getISBN());
-				System.out.println("Author(s): " + book.authorsToStr());
+				System.out.println("Author: " + book.getAuthor());
 				System.out.println("Title: " + book.getTitle());
 				System.out.println();
 				k++;

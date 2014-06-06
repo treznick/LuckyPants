@@ -8,8 +8,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
-import java.util.ArrayList;
-
 public class CreateBookCommand {
 	
 	public boolean execute(Book book) {
@@ -33,10 +31,7 @@ public class CreateBookCommand {
 		// TODO Auto-generated method stub
 		CreateBookCommand create = new CreateBookCommand();
 		Book book = new Book();
-		ArrayList<String> authors = new ArrayList<String>();
-		authors.add("John Doe");
-		authors.add("Jane Doe");
-		book.setAuthors(authors);
+		book.setAuthor("John Doe");
 		book.setTitle("Book1");
 		book.setPages(200);
 		book.setISBN("AB1200101FR1");

@@ -5,11 +5,7 @@ meta_url="/rest/metadata/";
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
-    			if(key == "authors") {
-    				$("div.book_div").append("<br/>Please enter " + key + "separated by ';':"+"<input type='text' name='"+key+"'"+">");
-    			} else {
-    				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">"); 
-    			}
+    			$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">"); 
     		});
     });
     $.fn.serializeObject = function()
