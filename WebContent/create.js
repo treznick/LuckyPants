@@ -9,19 +9,18 @@ $(document).ready(function(){
     			if(key != "_author_id" && key != "genres" && key != "author") {
     				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">");
     			} else if(key == "author") {
-    				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='"+key+"'>");
-    				$.getJSON(author_url, function(data){
-    					console.log(data);
-    					$.each (data, function( count, object){
-    						if(object.fname != undefined || object.lname != undefined ) {
-    							$("select#author_select").append("<option value='"+object.id+"'>"+object.fname+" "+object.lname+"</option>");
-    						}
-    					});
-    				});
-    				$("div.book_div").append("</select>");
+    				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='"+key+"'></select>");
     			}
     		});
     });
+    $.getJSON(author_url, function(data){
+		console.log(data);
+		$.each (data, function( count, object){
+			if(object.fname != undefined || object.lname != undefined ) {
+				$("select#author_select").append("<option value='"+object.id+"'>"+object.fname+" "+object.lname+"</option>");
+			}
+		});
+	});
     $.fn.serializeObject = function()
     {
        var o = {};
