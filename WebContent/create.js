@@ -1,11 +1,25 @@
 //we are reusing this URL, so move it to a variable
 base_url="/rest/books/";
 meta_url="/rest/metadata/";
+author_url="/rest/authors/";
 
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
-    			$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">"); 
+    			if(key != "author" && key != "genres") {
+    				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">");
+    			} else if(key == "author") {
+    				$("div.book_div").append("<select id='author_select' name='"+key+"'>");
+    				$.getJSON(author_url, function(data){
+    					console.log(data);
+    					$.each (data, function( count, object){
+    						if(object.fname != undefined || object.lname != undefined ) {
+    							$("select#author_select").append("<option value='"+object.id+"'>"+object.fname+" "+object.lname+"</option>");
+    						}
+    					});
+    				});
+    				$("div.book_div").append("</select>");
+    			}
     		});
     });
     $.fn.serializeObject = function()
