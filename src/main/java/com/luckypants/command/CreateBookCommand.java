@@ -1,9 +1,12 @@
 package com.luckypants.command;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.luckypants.model.Author;
 import com.luckypants.model.Book;
-import com.luckypants.mongo.BooksConnectionProvider;
+import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -11,8 +14,8 @@ import com.mongodb.util.JSON;
 public class CreateBookCommand {
 	
 	public boolean execute(Book book) {
-		BooksConnectionProvider booksConn = new BooksConnectionProvider();
-		DBCollection booksCollection = booksConn.getCollection();
+		ConnectionProvider booksConn = new ConnectionProvider();
+		DBCollection booksCollection = booksConn.getCollection("books");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -28,13 +31,23 @@ public class CreateBookCommand {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		CreateBookCommand create = new CreateBookCommand();
 		Book book = new Book();
-		book.setAuthor("John Doe");
+		Author author = new Author();
+		author.setFname("John");
+		author.setLname("Doe");
+		CreateAuthorCommand createAuthor = new CreateAuthorCommand();
+		String _id = createAuthor.execute(author);
 		book.setTitle("Book1");
 		book.setPages(200);
 		book.setISBN("AB1200101FR1");
+		book.set_author_id(_id);
+		ArrayList<String>genres = new ArrayList<String>();
+		genres.add("Comedy");
+		genres.add("Humor");
+		book.setGenres(genres);
+		
 		if (create.execute(book)) {
 			System.out.println("Success: Book Created!");
 		} else {
