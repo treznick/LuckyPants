@@ -24,7 +24,6 @@ import com.luckypants.command.CreateBookCommand;
 import com.luckypants.command.DeleteBookCommand;
 import com.luckypants.command.GetBookCommand;
 import com.luckypants.command.ListAllBooksCommand;
-import com.luckypants.command.FindBooksCommand;
 import com.luckypants.model.Book;
 import com.luckypants.properties.PropertiesLookup;
 import com.mongodb.DBObject;
@@ -40,7 +39,13 @@ public class BookService {
 	public Response listBooks() {
 		ListAllBooksCommand listBooks = new ListAllBooksCommand();
 		ArrayList<DBObject> list = listBooks.execute();
-		return Response.status(200).entity(list).build();
+		String bookString = null;
+		try {
+			bookString = mapper.writeValueAsString(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(bookString).build();
 	}
 	
 //	Get Property
@@ -58,9 +63,15 @@ public class BookService {
 	@Path("/{key}/{value}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBooksByValue(@PathParam("key") String key, @PathParam("value") String value) {
-		FindBooksCommand findBooks = new FindBooksCommand();
-		ArrayList<DBObject> list = findBooks.execute(key, value);
-		return Response.status(200).entity(list).build();
+		GetBookCommand getBookCommand = new GetBookCommand();
+		Book book = getBookCommand.execute(key, value);
+		String bookString = null;
+		try {
+			bookString = mapper.writeValueAsString(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(bookString).build();
 	}
 	
 //	Search-logic
@@ -81,16 +92,6 @@ public class BookService {
 			return Response.status(500).entity(e.toString()).build();
 		}
 		return Response.status(200).entity(rString).build();
-	}
-	
-//	isbn-based-crud
-	@GET
-	@Path("/{isbn}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBook(@PathParam("isbn") String isbn) {
-		GetBookCommand getBookCommand = new GetBookCommand();
-		DBObject book = getBookCommand.execute(isbn);
-		return Response.status(200).entity(book).build();
 	}
 	
 	@PUT

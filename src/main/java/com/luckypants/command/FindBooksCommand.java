@@ -2,7 +2,7 @@ package com.luckypants.command;
 
 import java.util.ArrayList;
 
-import com.luckypants.mongo.BooksConnectionProvider;
+import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -10,8 +10,8 @@ import com.mongodb.DBObject;
 
 public class FindBooksCommand {
 	public ArrayList<DBObject> execute(String key, String value){
-		BooksConnectionProvider booksConn = new BooksConnectionProvider();
-		DBCollection booksCollection = booksConn.getCollection();
+		ConnectionProvider booksConn = new ConnectionProvider();
+		DBCollection booksCollection = booksConn.getCollection("books");
 		
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put(key, value);

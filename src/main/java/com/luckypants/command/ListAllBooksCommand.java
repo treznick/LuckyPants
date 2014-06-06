@@ -2,7 +2,7 @@ package com.luckypants.command;
 
 import java.util.ArrayList;
 
-import com.luckypants.mongo.BooksConnectionProvider;
+import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -10,8 +10,8 @@ import com.mongodb.DBObject;
 public class ListAllBooksCommand {
 	
 	public ArrayList<DBObject> execute(){
-		BooksConnectionProvider booksConn = new BooksConnectionProvider();
-		DBCollection booksCollection = booksConn.getCollection();
+		ConnectionProvider booksConn = new ConnectionProvider();
+		DBCollection booksCollection = booksConn.getCollection("books");
 		
 		DBCursor cursor = booksCollection.find();
 		
