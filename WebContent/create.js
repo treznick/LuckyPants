@@ -17,7 +17,7 @@ $(document).ready(function(){
 		console.log(data);
 		$.each (data, function( count, object){
 			if(object.fname != undefined || object.lname != undefined ) {
-				$("select#author_select").append("<option value='"+object._id+"'>"+object.fname+" "+object.lname+"</option>");
+				$("select#author_select").append("<option value='"+object.id+"'>"+object.fname+" "+object.lname+"</option>");
 			}
 		});
 	});
