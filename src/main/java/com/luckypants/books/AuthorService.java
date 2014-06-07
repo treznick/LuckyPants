@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.luckypants.command.ListAllAuthorsCommand;
-import com.mongodb.DBObject;
+import com.luckypants.model.Author;
 
 @Path("/authors")
 public class AuthorService {
@@ -22,7 +22,7 @@ public class AuthorService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listAuthors() {
 		ListAllAuthorsCommand listAuthors = new ListAllAuthorsCommand();
-		ArrayList<DBObject> list = listAuthors.execute();
+		ArrayList<Author> list = listAuthors.execute();
 		String authorString = null;
 		try {
 			authorString = mapper.writeValueAsString(list);

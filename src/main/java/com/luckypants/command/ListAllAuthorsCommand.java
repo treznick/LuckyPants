@@ -5,20 +5,22 @@ import java.util.ArrayList;
 import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.luckypants.model.Author;
 
 public class ListAllAuthorsCommand {
 	
-	public ArrayList<DBObject> execute(){
+	public ArrayList<Author> execute(){
 		ConnectionProvider authorsConn = new ConnectionProvider();
 		DBCollection authorsCollection = authorsConn.getCollection("authors");
 		
 		DBCursor cursor = authorsCollection.find();
 		
-		ArrayList<DBObject> authors = new ArrayList<DBObject>();
+		ArrayList<Author> authors = new ArrayList<Author>();
+		GetAuthorCommand getAuthor = new GetAuthorCommand();
 		try {
 		   while(cursor.hasNext()) {
-			   authors.add(cursor.next());
+			   Author a = getAuthor.execute("_id", cursor.next().get("_id").toString());
+			   authors.add(a);
 		   }
 		} finally {
 		   cursor.close();
@@ -28,7 +30,7 @@ public class ListAllAuthorsCommand {
 	}
 	public static void main(String[] args) {
 		ListAllAuthorsCommand listAuthors = new ListAllAuthorsCommand();
-		ArrayList<DBObject> list = listAuthors.execute();
+		ArrayList<Author> list = listAuthors.execute();
 		System.out.println(list);
 
 	}

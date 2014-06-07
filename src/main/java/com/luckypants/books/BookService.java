@@ -38,7 +38,7 @@ public class BookService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listBooks() {
 		ListAllBooksCommand listBooks = new ListAllBooksCommand();
-		ArrayList<DBObject> list = listBooks.execute();
+		ArrayList<Book> list = listBooks.execute();
 		String bookString = null;
 		try {
 			bookString = mapper.writeValueAsString(list);

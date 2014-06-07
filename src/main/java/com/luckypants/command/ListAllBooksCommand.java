@@ -5,20 +5,22 @@ import java.util.ArrayList;
 import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.luckypants.model.Book;
 
 public class ListAllBooksCommand {
 	
-	public ArrayList<DBObject> execute(){
+	public ArrayList<Book> execute(){
 		ConnectionProvider booksConn = new ConnectionProvider();
 		DBCollection booksCollection = booksConn.getCollection("books");
 		
 		DBCursor cursor = booksCollection.find();
 		
-		ArrayList<DBObject> books = new ArrayList<DBObject>();
+		ArrayList<Book> books = new ArrayList<Book>();
+		GetBookCommand getBook = new GetBookCommand();
 		try {
 		   while(cursor.hasNext()) {
-			   books.add(cursor.next());
+			   Book b = getBook.execute("_id", cursor.next().get("_id").toString());
+			   books.add(b);
 		   }
 		} finally {
 		   cursor.close();
@@ -28,7 +30,7 @@ public class ListAllBooksCommand {
 	}
 	public static void main(String[] args) {
 		ListAllBooksCommand listBooks = new ListAllBooksCommand();
-		ArrayList<DBObject> list = listBooks.execute();
+		ArrayList<Book> list = listBooks.execute();
 		System.out.println(list);
 
 	}
