@@ -9,7 +9,7 @@ $(document).ready(function(){
     			if(key != "_author_id" && key != "genres" && key != "author") {
     				$("div.book_div").append("<br/>Please enter " + key + "<input type='text' name='"+key+"'"+">");
     			} else if(key == "author") {
-    				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='"+key+"'></select>");
+    				$("div.book_div").append("<br/> Please enter author: <select id='author_select' name='_author_id'></select>");
     			}
     		});
     });

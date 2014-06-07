@@ -26,7 +26,6 @@ import com.luckypants.command.GetBookCommand;
 import com.luckypants.command.ListAllBooksCommand;
 import com.luckypants.model.Book;
 import com.luckypants.properties.PropertiesLookup;
-import com.mongodb.DBObject;
 
 
 @Path("/books")
