@@ -16,7 +16,7 @@ public class Book {
 	private int pages;
 	private String _author_id;
 	private String isbn;
-	 @JsonDeserialize(as=ArrayList.class, contentAs=String.class)
+	@JsonDeserialize(as=ArrayList.class, contentAs=String.class)
 	private ArrayList<String> genres;
 
 	public String getISBN() {
