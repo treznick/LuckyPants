@@ -21,6 +21,7 @@ public class CreateBookCommand {
 		try {
 			DBObject dbObject = (DBObject) JSON.parse(mapper
 					.writeValueAsString(book));
+			System.out.println(dbObject);
 			booksCollection.insert(dbObject);
 		} catch (Exception e) {
 			System.out.println("Error during mapping book to Mongo Object");
